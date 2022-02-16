@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string.h>
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,7 +53,7 @@ void MeetingHotel::adddata(int choice)
     cout << "\t\t\t\t\t\tInsert Data \n";
     cout << "\t\t\t\t------------------------------------------------\n\n";
     cout << "\t\t\t\t\tEnter Hostname: ";
-    cin >> Hostname;
+    getline(cin>>ws,Hostname);
 
     if (choice == 1)
     {
@@ -64,11 +65,11 @@ void MeetingHotel::adddata(int choice)
     }
     cout << "\n\t\t\t\t\tMeet Purpose: " << meetpurpose << endl;
     cout << "\n\t\t\t\t\tEnter Meet Date: ";
-    cin >> meetdate;
+    getline(cin>>ws,meetdate);
     cout << "\n\t\t\t\t\tEnter Meet Duration: ";
-    cin >> meetduration;
+    getline(cin>>ws,meetduration);
     cout << "\n\t\t\t\t\tEnter Start-Time of Meet: ";
-    cin >> meetstarttime;
+    getline(cin>>ws,meetstarttime);
     cout << "\n\t\t\t\t\tEnter Room Number: ";
     cin >> user_room;
 
@@ -85,6 +86,7 @@ void MeetingHotel::adddata(int choice)
     cout<<"\n\n\t\t\t\t\tPress any key to continue";
     getch();
     fout.close();
+    homescreen();
 }
 
 void MeetingHotel::book()
@@ -117,7 +119,7 @@ void MeetingHotel::records()
 
     string room;
     cout << "\t\t\t\t\tEnter the booked room number/Hostname here: ";
-    cin >> room;
+    getline(cin>>ws,room);
 
     while (!fin.eof())
     {
@@ -139,9 +141,10 @@ void MeetingHotel::records()
         cout << "\t\t\t\t\t\t----------Details----------" << endl;
         cout << "\n\t\t\t\t\t\tNo Such user is found!!!!" << endl;
     }
+    fin.close();
     cout<<"\n\n\t\t\t\t\tPress any key to continue";
     getch();
-    fin.close();
+    homescreen();
 }
 void MeetingHotel::edit()
 {
@@ -166,13 +169,13 @@ void MeetingHotel::edit()
             cout << "\t\t\t\t\tEnter New Details: " << endl;
             cout << "\t\t\t\t\t--------------------------------" << endl;
             cout << "\t\t\t\t\tHostname: ";
-            cin >> Hostname;
+            getline(cin>>ws,Hostname);
             cout << "\n\t\t\t\t\tMeet Purpose: ";
-            cin >> meetpurpose;
+            getline(cin>>ws,meetpurpose);
             cout << "\n\t\t\t\t\tMeet Date: ";
-            cin >> meetdate;
+            getline(cin>>ws,meetdate);
             cout << "\n\t\t\t\t\tMeet Duration: ";
-            cin >> meetduration;
+            getline(cin>>ws,meetduration);
             file.seekg(file_pos);
             file.write((char *)this, sizeof(MeetingHotel));
             cout << "\n\t\t\t\t\tRecord is updated for room no. " << room_no << endl;
@@ -186,6 +189,7 @@ void MeetingHotel::edit()
     }
     cout<<"\n\n\t\t\t\t\tPress any key to continue";
     getch();
+    homescreen();
 }
 void MeetingHotel::cancel()
 {
@@ -212,8 +216,10 @@ void MeetingHotel::cancel()
             if (ans == 'N')
             {
                 fout.write((char *)this, sizeof(MeetingHotel));
-            }
+            }else{
+
             flag = true;
+            }
         }
         else
         {
@@ -234,8 +240,9 @@ void MeetingHotel::cancel()
         remove("db.dat");
         rename("temp.dat", "db.dat");
     }
+    cout<<"\t\t\t\t\tPress any key::";
     getch();
-
+    homescreen();
 }
 void MeetingHotel::homescreen()
 {
@@ -270,7 +277,10 @@ hs:
     case 4:
         cancel();
         break;
-
+    case 5:
+        exit(0);
+        break;
+        
     default:
         cout << "\t\t\t\t-----------Invalid Choice-----------" << endl;
         goto hs;
